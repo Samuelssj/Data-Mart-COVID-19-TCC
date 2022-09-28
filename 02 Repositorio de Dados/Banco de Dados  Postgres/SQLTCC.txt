@@ -1,0 +1,126 @@
+**Tratar os sexo indefinidos*** ***valor nulos e negativos**
+
+
+
+drop table IF EXISTS dm_tempo;
+
+create table dm_tempo (
+	id_tempo serial primary key,
+	dia varchar(2),
+	semanaEpi integer,
+	mes varchar(2),
+	ano varchar(4)
+
+);
+
+
+drop table IF EXISTS dm_local;
+
+create table dm_local(
+	id_local serial primary key,
+	estado varchar(20),	
+	cidade varchar(100),	
+	codmun varchar(20)
+);
+
+drop table IF EXISTS fato;      
+
+create table fato (
+	dm_local_id integer references dm_local(id_local),
+	dm_tempo_id integer references dm_tempo(id_tempo),
+	constraint id_tempo_local primary key (
+	dm_tempo_id, dm_local_id),	
+	casos integer,
+	obitos integer,
+	ordem_de_registro integer,
+	população_estimada integer
+	
+);
+
+
+
+################OFICIAL###################
+
+
+
+drop table IF EXISTS dm_tempo_OF;
+
+create table dm_tempo_OF (
+	id_tempo_OF serial primary key,
+	ano varchar(4)
+
+);
+
+drop table IF EXISTS dm_local_OF;
+
+create table dm_local_OF(
+	id_local_OF serial primary key,
+	estado_of varchar(20)
+);
+
+
+
+
+drop table IF EXISTS dm_local_obito_OF;
+
+create table dm_local_obito_OF(
+	id_local_obito_OF serial primary key,
+	descricao_OF VARCHAR(255)
+);
+
+
+
+drop table IF EXISTS dm_doenca_OF;
+
+create table dm_doenca_OF(
+	id_doenca_OF serial primary key,
+	tipo_doenca_OF VARCHAR(255)
+);
+
+
+
+drop table IF EXISTS dm_pessoa_OF;
+
+create table dm_pessoa_OF(
+	id_pessoa_OF serial primary key,
+	faixa_etaria_OF VARCHAR(255),
+    	sexo_OF VARCHAR(255)
+);
+
+
+
+
+drop table IF EXISTS fato_OF;      
+
+create table fato_OF (
+
+	dm_tempo_OF_id integer references dm_tempo_OF(id_tempo_OF),
+	dm_local_OF_id integer references dm_local_OF(id_local_OF),
+	dm_pessoa_OF_id integer references dm_pessoa_OF(id_pessoa_OF),
+	dm_doenca_OF_id integer references dm_doenca_OF(id_doenca_OF),
+	dm_local_obito_OF_id integer references dm_local_obito_OF(id_local_obito_OF),
+	
+	constraint id_tempo_OF_local_OF_pessoa_OF_doenca_OF_local_obito_OF primary key (
+	dm_tempo_OF_id, dm_local_OF_id, dm_pessoa_OF_id, dm_doenca_OF_id, dm_local_obito_OF_id),	
+   	total_obito_OF integer
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
